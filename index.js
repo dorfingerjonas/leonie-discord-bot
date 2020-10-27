@@ -34,7 +34,21 @@ client.on('ready', () => {
 });
 
 client.on('message', async msg => {
-    if (!msg.author.bot) {
+    if (msg.content.toLowerCase().startsWith('!leonie')) {
+        const command = msg.content.toLowerCase().split('!leonie ')[1];
+
+        switch (command) {
+            case 'hilfe':
+                help(msg);
+                break;
+            case 'tipps':
+                tipps(msg);
+                break;
+            default:
+                fallback(msg);
+                break;
+        }
+    } else if (!msg.author.bot) {
         try {
             const intentResponse = await detectIntent(projectId, sessionId, msg.content, languageCode);
             let responseText = intentResponse.queryResult.fulfillmentText;
