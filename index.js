@@ -50,11 +50,47 @@ client.on('message', async msg => {
                 }
             }
 
-            msg.channel.send(responseText);
+            msg.channel.send(responseText).catch(console.error);
         } catch (error) {
             console.error(error);
         }
     }
 });
+
+function help(msg) {
+    const help = '`!leonie tipps`: Zeigt Tipps für Unterhaltungen und Fragen an \n' +
+        '`!leonie hilfe`: Zeigt Hilfestellungen an \n';
+
+    const embed = new Discord.MessageEmbed()
+        .setColor('#fcbb4f')
+        .setAuthor('Leonie', 'https://cdn.discordapp.com/app-icons/770211066452901928/0c075cbaf493b71b20d23aae8483f4d3.png?size=256')
+        .addField('Hilfe', help);
+
+    msg.channel.send(embed).catch(console.error);
+}
+
+function tipps(msg) {
+    const help = 'Frag mich Sachen über die HTL Leonding: z.B. ' +
+        '\n - "Erzähl mir was zur HTL Leonding" ' +
+        '\n - "Was sind die Berufschancen nach der HTL Leonding?"  ' +
+        '\n - ... \n' +
+        'Du kannst auch Fragen über mich stellen: z.B. ' +
+        '\n - "Wer hat dich erschaffen" ' +
+        '\n - "Wie alt bist du" ' +
+        '\n - "Was kann Leonie" ' +
+        '\n - ... \n' +
+        'Am Besten du schreibst mir einfach und dann wirst du mit der Zeit auch lustige Seiten von mir kennenlernen.';
+
+    const embed = new Discord.MessageEmbed()
+        .setColor('#fcbb4f')
+        .setAuthor('Leonie', 'https://cdn.discordapp.com/app-icons/770211066452901928/0c075cbaf493b71b20d23aae8483f4d3.png?size=256')
+        .addField('Tipps', help);
+
+    msg.channel.send(embed).catch(console.error);
+}
+
+function fallback(msg) {
+    msg.channel.send('Ich kenne diesen Befehl leider nicht.').catch(console.error);
+}
 
 client.login(token).catch(console.error);
