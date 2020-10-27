@@ -37,7 +37,20 @@ client.on('message', async msg => {
     if (!msg.author.bot) {
         try {
             const intentResponse = await detectIntent(projectId, sessionId, msg.content, languageCode);
-            msg.channel.send(intentResponse.queryResult.fulfillmentText);
+            let responseText = intentResponse.queryResult.fulfillmentText;
+            const placeholders = [
+                {regEx: '$author', content: `<@${msg.author.id}>`},
+                {regEx: '$hours', content: ('0' + new Date().getHours()).slice(-2)},
+                {regEx: '$minutes', content: ('0' + new Date().getMinutes()).slice(-2)},
+            ];
+
+            for (const placeholder of placeholders) {
+                while (responseText.includes(placeholder.regEx)) {
+                    responseText = responseText.replace(placeholder.regEx, placeholder.content);
+                }
+            }
+
+            msg.channel.send(responseText);
         } catch (error) {
             console.error(error);
         }
