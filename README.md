@@ -9,7 +9,8 @@ https://discordapp.com/oauth2/authorize?&client_id=770211066452901928&scope=bot&
 
 ### Commands
 
-- ``[Command]`` [Command description]
+- ``!leonie hilfe`` Show helpful information about commands
+- ``!leonie tipps`` Show hints and possible questions to ask
 
 ## Developers
 
