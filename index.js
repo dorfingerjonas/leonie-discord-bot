@@ -12,8 +12,6 @@ process.env.GOOGLE_APPLICATION_CREDENTIALS = 'GoogleApiKey.json';
 
 const sessionClient = new dialogflow.SessionsClient();
 
-executeQuery("Hallo Leonie!");
-
 async function detectIntent(projectId, sessionId, query, languageCode) {
     const sessionPath = sessionClient.projectAgentSessionPath(projectId, sessionId);
 
@@ -31,23 +29,19 @@ async function detectIntent(projectId, sessionId, query, languageCode) {
     return responses[0];
 }
 
-async function executeQuery(query) {
-    try {
-        console.log(`Sending Query: ${query}`);
-        const intentResponse = await detectIntent(projectId, sessionId, query, languageCode);
-        console.log('Detected intent')
-        console.log(intentResponse.queryResult.fulfillmentText);
-    } catch (error) {
-        console.error(error);
-    }
-}
-
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}`);
 });
 
-client.on('message', msg => {
-    console.log(msg.content);
+client.on('message', async msg => {
+    if (!msg.author.bot) {
+        try {
+            const intentResponse = await detectIntent(projectId, sessionId, msg.content, languageCode);
+            msg.channel.send(intentResponse.queryResult.fulfillmentText);
+        } catch (error) {
+            console.error(error);
+        }
+    }
 });
 
 client.login(token).catch(console.error);
